@@ -1,0 +1,79 @@
+//Design, Develop and Implement a menu-driven Program in C for the following Array operations
+Creating an Array of N Integer Elements
+Display of Array Elements with Suitable Headings
+Inserting an Element (ELEM) at a given valid Position (POS)
+Deleting an Element at a given valid Position(POS)
+Exit.
+Support the program with functions for each of the above operations.//
+
+
+#include&lt;stdlib.h&gt;
+#include&lt;stdio.h&gt;
+char mainstr[100], patstr[100], repstr[100], tempstr[100];
+void readstring()
+{
+printf(&quot;Enter the Main String\n&quot;);
+gets(mainstr);
+printf(&quot;Enter the Pattern String\n&quot;);
+gets(patstr);
+printf(&quot;Enter the Replace String\n&quot;);
+gets(repstr);
+}
+void display()
+{
+printf(&quot;Main String is\n&quot;);
+puts(mainstr);
+printf(&quot;Pattern String is\n&quot;);
+puts(patstr);
+printf(&quot;Replace String is \n&quot;);
+puts(repstr);
+}
+
+void patternmatch() /* Function for searching and replace a string */
+{
+int mi=0,ci=0,pi=0,ti=0,ri=0,flag = 0;
+while (mainstr[mi] != &#39;\0&#39;)
+{
+if(mainstr[ci]==patstr[pi])
+{
+ci++;
+
+pi++;
+if(patstr[pi]==&#39;\0&#39;)
+{
+for(ri=0;repstr[ri]!=&#39;\0&#39;;ri++,ti++)
+{
+tempstr[ti]=repstr[ri];
+}
+flag=1;
+pi=0;
+mi=ci;
+}
+}
+else
+{
+tempstr[ti++]=mainstr[mi];
+mi++;
+ci=mi;
+pi=0;
+}
+}
+if(flag==1)
+{
+printf(&quot;Pattern is found\n&quot;);
+tempstr[ti]=&#39;\0&#39;;
+//mainstr[mi]=tempstr[ti];
+printf(&quot;Replace String is \n&quot;);
+puts(tempstr);
+}
+else
+printf(&quot;Pattern not found\n&quot;);
+}
+
+int main()
+{
+readstring();
+display();
+patternmatch();
+return 0;
+}
