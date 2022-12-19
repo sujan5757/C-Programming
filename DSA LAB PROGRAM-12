@@ -1,0 +1,149 @@
+//HASHING
+
+#include&lt;stdio.h&gt;
+#include&lt;stdlib.h&gt;
+
+#define SIZE 100
+struct Employee
+{
+int employee_key, employee_age;
+char employee_name[30];
+};
+struct Employee emp[SIZE];
+int L;
+
+int hash_function(int key)
+{
+return (key % 97);
+}
+
+void linear_probing(int loc, struct Employee e)
+{
+int count = 0, i, flag=0;
+printf(&quot;\nCollision Detected...!!!\n&quot;);
+i=0;
+while(i&lt;SIZE)
+{
+if (emp[i].employee_key!=-1)
+count++;
+i++;
+}
+printf(&quot;Collision avoided successfully\n&quot;);
+if(count == SIZE)
+{
+
+printf(&quot;\n Hashing table is full\n&quot;);
+exit(1);
+}
+for(i=loc+1; i&lt;SIZE; i++)
+if(emp[i].employee_key == -1)
+{
+emp[i] = e;
+flag =1;
+break;
+}
+i=0;
+while((i&lt;loc) &amp;&amp; (flag==0))
+{
+if(emp[i].employee_key == -1)
+{
+emp[i] = e;
+flag =1;
+break;
+}
+i++;
+}
+}
+
+void read_file()
+{
+FILE *infile;
+int i, j;
+struct Employee E;
+infile = fopen(&quot;input.txt&quot;, &quot;r&quot;);
+if(infile == NULL)
+{
+
+fprintf(stderr, &quot;\nError opening input.txt\n\n&quot;);
+exit (1);
+}
+else
+{
+for (i=0; i&lt;SIZE; i++)
+{
+emp[i].employee_key = -1;
+}
+while(fscanf(infile,&quot;%d %s %d&quot;,&amp;E.employee_key, E.employee_name, &amp;E.employee_age)!=EOF)
+{
+L=hash_function(E.employee_key);
+if(emp[L].employee_key == -1 )
+emp[L] = E;
+else
+linear_probing(L, E);
+}
+}
+}
+
+void display_attached()
+{
+int j;
+printf(&quot;\n\n******Hash Table for Attached Keys*****\n\n&quot;);
+for (j=0; j&lt;SIZE; j++)
+{
+if(emp[j].employee_key != -1)
+printf(&quot;LOCATION[%d]---&gt;KEY= %d \t EMP NAME = %s \t EMP AGE =
+%d\n&quot;,j,emp[j].employee_key, emp[j].employee_name, emp[j].employee_age);
+
+}
+
+}
+
+void display_all()
+{
+int j;
+printf(&quot;\n\n*******Hash Table*******\n\n&quot;);
+for (j=0; j&lt;SIZE; j++)
+{
+if(emp[j].employee_key != -1)
+printf(&quot;LOCATION[%d]---&gt;KEY= %d \t EMP NAME = %s \t EMP AGE =
+%d\n&quot;,j,emp[j].employee_key, emp[j].employee_name, emp[j].employee_age);
+else
+printf(&quot;LOCATION[%d]---&gt;EMPTY\n&quot;,j);
+
+}
+}
+
+void main()
+{
+int ch;
+while (1)
+{
+printf(&quot;\n\n\n********** Hash function H: K L as H(K)=K mod m (remainder
+method)**********\n\n&quot;);
+printf(&quot;1. Read Records from the Input file\n&quot;);
+
+printf(&quot;2. Display Key Attached Location of Hash Table\n&quot;);
+printf(&quot;3. Display All Location of Hash Table\n&quot;);
+printf(&quot;4. Exit\n&quot;);
+
+printf(&quot;Enter your choice:\n&quot;);
+scanf(&quot;%d&quot;, &amp;ch);
+switch (ch)
+
+{
+case 1: read_file();
+
+break;
+
+case 2: display_attached();
+
+break;
+case 3: display_all();
+break;
+case 4: exit(0);
+default: printf(&quot;Enter a Valid Choice\n&quot;);
+break;
+}
+
+}
+}
