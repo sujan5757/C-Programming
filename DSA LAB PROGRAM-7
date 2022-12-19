@@ -1,0 +1,206 @@
+/*7. Design, Develop and Implement a menu driven Program in C for the following
+operations on Singly Linked List (SLL) of Student Data with the fields: USN,
+Name, Branch, Sem, PhNo
+a. Create a SLL of N Students Data by using front insertion.
+b. Display the status of SLL and count the number of nodes in it
+c. Perform Insertion / Deletion at End of SLL
+d. Perform Insertion / Deletion at Front of SLL(Demonstration of stack)
+e. Exit*/
+
+#include&lt;stdio.h&gt;
+#include&lt;stdlib.h&gt;
+#include&lt;string.h&gt;
+
+struct NODE /* NODE structure for Student Data*/
+{
+int sem;
+long long phno;
+char name[20],branch[10],usn[20]; //ph no can be even declared as long long phno
+struct NODE *link; /* Node Link to next Student Data*/
+};
+
+typedef struct NODE *NODEPTR; /* Node Pointer for NODE structure*/
+NODEPTR first = NULL; /* first Pointer for LIST*/
+
+NODEPTR create_node()
+{
+NODEPTR newnode = (NODEPTR)malloc(sizeof(struct NODE)); /* Create NODE dynamically*/
+printf(&quot;Enter the Student USN\n&quot;);
+scanf(&quot;%s&quot;,newnode-&gt;usn);
+printf(&quot;Enter the Student Name\n&quot;);
+scanf(&quot;%s&quot;,newnode-&gt;name);
+
+printf(&quot;Enter the Student BRANCH\n&quot;);
+scanf(&quot;%s&quot;,newnode-&gt;branch);
+printf(&quot;Enter the Student SEMESTER\n&quot;);
+scanf(&quot;%d&quot;,&amp;newnode-&gt;sem);
+printf(&quot;Enter the Student PHONE NO.\n&quot;);
+scanf(&quot;%lld&quot;,&amp;newnode-&gt;phno);
+newnode-&gt;link = NULL; /* Initially NODE link is set to NULL*/
+return newnode; /* return NODE Pointer */
+}
+
+void insert_front() /* Function to insert NODE to front */
+{
+NODEPTR temp = create_node();
+if(first==NULL)
+first=temp;
+else
+{
+temp-&gt;link = first;
+first=temp;
+}
+}
+void delete_front()
+{
+NODEPTR temp;
+temp = first;
+if(first==NULL)
+printf(&quot;List is Empty\n&quot;);
+else
+{
+first = temp-&gt;link;
+temp-&gt; link = NULL;
+
+free(temp);
+printf(&quot;Front node deleted successfully\n&quot;);
+}
+}
+void insert_end()
+{
+NODEPTR ptr;
+NODEPTR temp = create_node();
+if(first==NULL)
+first=temp;
+else
+{
+ptr = first;
+while(ptr-&gt;link != NULL)
+{
+ptr = ptr-&gt;link;
+}
+ptr-&gt;link = temp;
+}
+
+}
+
+void delete_end()
+{
+NODEPTR ptr, prev;
+ptr = first;
+if(first==NULL)
+printf(&quot;List is Empty\n&quot;);
+else if(first-&gt;link == NULL) // when list has single node
+{
+first = NULL;
+
+free(ptr);
+printf(&quot;End node deleted successfully\n&quot;);
+}
+else // when list has more than one node
+{
+while(ptr-&gt;link != NULL)
+{
+prev = ptr;
+ptr = ptr-&gt;link;
+}
+prev-&gt;link = NULL;
+free(ptr);
+printf(&quot;End node deleted successfully\n&quot;);
+}
+}
+
+void display()
+{
+NODEPTR ptr;
+int count=0;
+ptr = first;
+if(first == NULL)
+{
+printf(&quot;List is Empty\n&quot;);
+}
+else
+{
+printf(&quot;The List values are ....\n&quot;);
+printf(&quot;[USN, Name, Branch, Sem, Phone]\n&quot;);
+while(ptr!= NULL)
+{
+
+printf(&quot;[%s,%s,%s,%d,%lld]--&gt;&quot;,ptr-&gt;usn,ptr-&gt;name,ptr-&gt;branch,ptr-&gt;sem,ptr-&gt;phno);
+ptr = ptr-&gt;link;
+count++;
+}
+printf(&quot;\nNODE COUNT = %d\n&quot;,count);
+}
+
+}
+
+int main()
+{
+int n, ch, i;
+while (1)
+{
+printf(&quot;\n**********Singly Linked List Operations Menu**********\n&quot;);
+printf(&quot;1. Create a SLL of N Students Data by using front insertion\n&quot;);
+printf(&quot;2. Display the status of SLL\n&quot;);
+printf(&quot;3. Insertion / Deletion at End of SLL\n&quot;);
+printf(&quot;4. Insertion / Deletion at Front of SLL\n&quot;);
+printf(&quot;5. Exit\n&quot;);
+printf(&quot;Enter your choice:\n&quot;);
+scanf(&quot;%d&quot;, &amp;ch);
+switch (ch)
+{
+case 1: printf(&quot;Enter the value of N to create SLL\n&quot;);
+
+scanf(&quot;%d&quot;, &amp;n);
+for(i=1;i&lt;=n;i++)
+{
+printf(&quot;Enter node %d to insert towards front of SLL\n&quot;,i);
+insert_front();
+}
+
+break;
+
+case 2: display();
+break;
+
+case 3: printf(&quot;Press 1 to Insert End or 2 to Delete End\n&quot;);
+
+scanf(&quot;%d&quot;, &amp;ch);
+if(ch == 1)
+{
+printf(&quot;Enter a node to insert towards end of SLL\n&quot;);
+insert_end();
+}
+else if(ch == 2)
+{
+delete_end();
+}
+else
+printf(&quot;Invalid Entry\n&quot;);
+break;
+
+case 4: printf(&quot;Press 1 to Insert Front or 2 to Delete Front\n&quot;);
+
+scanf(&quot;%d&quot;, &amp;ch);
+if(ch == 1)
+{
+printf(&quot;Enter a node to insert to Front of SLL\n&quot;);
+insert_front();
+}
+else if(ch == 2)
+{
+delete_front();
+}
+else
+printf(&quot;Invalid Entry\n&quot;);
+break;
+
+case 5: exit(0);
+
+default: printf(&quot;Enter the valid choice\n\n&quot;);
+break;
+}
+}
+return 0;
+}
